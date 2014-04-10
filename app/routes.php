@@ -36,9 +36,39 @@ Route::group(array('prefix' => 'bootstrap'), function(){
 
 
 //Begin Token Granting Routes
-Route::group(array('prefix' => 'api/', 'before' => 'auth.token|auth'), function() {
+Route::group(array('prefix' => 'api/'), function() {
     
     Route::group(array('prefix' => 'v1/'), function() {
+        
+        Route::group(array('before' => 'auth.token|auth'), function(){
+            Route::get('user', function() {
+                return User::find(Auth::user()->id);
+
+            });
+
+            Route::get('user/{id}', function($id) {
+                return User::find($id);
+            });
+
+            Route::get('user/{id}/group', function($id) {
+                return User::find($id)->groups;
+            });
+
+            Route::group(array('prefix' => 'group'), function(){
+
+                Route::get('/', function() {
+                    return User::find(Auth::user()->id)->groups;
+                });
+
+                Route::get('/{id}', function($id) {
+                    return Group::find($id);
+                });
+
+                Route::get('/{id}/users', function($id) {
+                    return Group::find($id)->users;
+                });
+            });
+        });
         
         Route::post('user', function() {
             $user = new User();
@@ -46,34 +76,7 @@ Route::group(array('prefix' => 'api/', 'before' => 'auth.token|auth'), function(
             $user->username = Input::get('username');
             $user->password = Hash::make(Input::get('password'));
             $user->save();
-        });
-  
-        Route::get('user', function() {
-            return User::find(Auth::user()->id);
-
-        });
-
-        Route::get('user/{id}', function($id) {
-            return User::find($id);
-        });
-
-        Route::get('user/{id}/group', function($id) {
-            return User::find($id)->groups;
-        });
-
-        Route::group(array('prefix' => 'group'), function(){
-
-            Route::get('/', function() {
-                return User::find(Auth::user()->id)->groups;
-            });
-
-            Route::get('/{id}', function($id) {
-                return Group::find($id);
-            });
-
-            Route::get('/{id}/users', function($id) {
-                return Group::find($id)->users;
-            });
+            return Response::json(array('success' => 'user '.$user->username.' successfully created.'));
         });
 
     });
