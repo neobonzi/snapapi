@@ -55,9 +55,9 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'us-cdbr-east-05.cleardb.net',
-			'database'  => 'heroku_f265e71da57638d',
-			'username'  => 'b991e83e99ff26',
-			'password'  => 'acd91bbe',
+			'database'  => 'heroku_958cd7f8d9fcb14',
+			'username'  => 'b4459ba851a394',
+			'password'  => '6320eb6b',
 			'unix_socket' => '/tmp/mysql.sock',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
