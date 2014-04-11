@@ -8,6 +8,9 @@
 		"madewithlove/laravel-oauth2": "0.4.*",
 		"tappleby/laravel-auth-token": "dev-feature/jwt"
 	},
+	"require-dev": {
+		"phpunit/phpunit": "4.0.*"
+	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
