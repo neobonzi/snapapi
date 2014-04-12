@@ -20,8 +20,8 @@ class UsersController extends APIController {
 	 */
 	public function index()
 	{
-		$users = User::all();
-		return $this->respond($this->userTransformer->transformCollection($users->all()));
+		$user = User::find(Auth::user()->id);
+		return $this->respond($this->userTransformer->transform($user));
 	}
 
 
@@ -43,13 +43,19 @@ class UsersController extends APIController {
 	 */
 	public function store()
 	{
-		if(!Input::get('username') or !Input::get('email') or !Input::get('password')) {
-			return $this->respondUnprocessableEntity("Parameters failed validation for a user.");
+		$validator = Validator::make(Input::all(),[
+			'username' => 'required|min:5|max:20|unique:users',
+			'password' => 'required|min:5|max:20|unique:users',
+			'email' => 'required|email|unique:users'
+		]);
+		if($validator->fails()) {
+			$messages = implode("",$validator->messages()->all(":message"));
+			return $this->respondUnprocessableEntity("Parameters failed validation for a user. " . $messages);
 		}
 
 		$newUser = User::create([
-			'username' => Input::get('username'), 
-			'email' => Input::get('email'), 
+			'username' => e(Input::get('username')), 
+			'email' => e(Input::get('email')), 
 			'password' => Hash::make(Input::get('password'))
 		]);
 		
@@ -74,7 +80,7 @@ class UsersController extends APIController {
 		if (!$user) {
 			return $this->respondNotFound("User with id ".$id." does not exist.");
 		}
-		return $this->respond($this->userTransformer->transform($user));
+		return $this->setStatusCode(201)->respond($this->userTransformer->transform($user));
 	}
 
 
