@@ -59,17 +59,9 @@ class UsersController extends APIController {
 		$user = User::find($id);
 
 		if (!$user) {
-			return Response::json([
-				'error' => [
-					'message' => 'User does not exist',
-					'code' => 34
-				]
-			], 404);
+			return $this->respondNotFound("User with id ".$id." does not exist.");
 		}
-
-		return Response::json([
-			'data' => $this->userTransformer->transform($user)
-		], 200);
+		return $this->respond($this->userTransformer->transform($user));
 	}
 
 

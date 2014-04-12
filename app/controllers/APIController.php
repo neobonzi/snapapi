@@ -1,86 +1,55 @@
 <?php
 
 class APIController extends BaseController {
+	/**
+	 * @var int
+	 */
+	protected $statusCode = 200;
 
 	/**
-	 * Display a listing of the resource.
+	 * Returns error when resource is not found
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function respondNotFound($message = "Not found!")
 	{
-		//
+		return $this->setStatusCode(404)->respondWithError($message);
 	}
 
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+	public function respond($data, $headers = []) {
+		return Response::json($data, $this->getStatusCode(), $headers);
 	}
 
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
+	public function respondWithError($message) {
+		return $this->respond([
+			'error' => [
+				'message' => $message,
+				'status_code' => $this->getStatusCode()
+			]
+		]);
 	}
 
+    /**
+     * Gets the value of statusCode.
+     *
+     * @return mixed
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
+    
+    /**
+     * Sets the value of statusCode.
+     *
+     * @param mixed $statusCode the status code
+     *
+     * @return self
+     */
+    public function setStatusCode($statusCode)
+    {
+        $this->statusCode = $statusCode;
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
-
+        return $this;
+    }
 }
