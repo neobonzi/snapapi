@@ -12,7 +12,9 @@
 */
 
 Route::group(['prefix' => 'api/v1'], function(){
+    // User Routing
     Route::resource('users', 'UsersController');
+    Route::post('login', 'UsersController@login');
 });
 
 

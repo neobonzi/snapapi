@@ -23,5 +23,11 @@ class UserSeeder extends Seeder {
             'password' => Hash::make('sampleuser')
          ]);
       }
+      // Add the testing account
+      User::create([
+         'email' => $faker->email(),
+         'username' => 'admin',
+         'password' => Hash::make('admin')
+      ]);
    }
 }
