@@ -1,5 +1,6 @@
 <?php
 use Support\Transformers\UserTransformer;
+
 class UsersController extends APIController {
 
 	public $restful = true;

@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
+		"way/generators": "2.*",
 		"madewithlove/laravel-oauth2": "0.4.*",
 		"tappleby/laravel-auth-token": "dev-feature/jwt"
 	},

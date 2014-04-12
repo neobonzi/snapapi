@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGameTable extends Migration {
+class CreateGroupsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,6 @@ class CreateGameTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('group_user', function(Blueprint $table) {
-			$table->integer('user_id');
-			$table->integer('group_id');
-			$table->unique(array('user_id', 'group_id'));
-		});
-
 		Schema::create('groups', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
@@ -32,7 +26,7 @@ class CreateGameTable extends Migration {
 	 */
 	public function down()
 	{
-		Scheme::drop('group_user');
 		Schema::drop('groups');
 	}
+
 }

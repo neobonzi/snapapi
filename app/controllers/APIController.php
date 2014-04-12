@@ -1,10 +1,12 @@
 <?php
 
+use \Illuminate\Http\Response as IlluminateResponse;
+
 class APIController extends BaseController {
 	/**
 	 * @var int
 	 */
-	protected $statusCode = 200;
+	protected $statusCode = IlluminateResponse::HTTP_OK;
 
 	/**
 	 * Responds with an internal server error
@@ -12,11 +14,11 @@ class APIController extends BaseController {
 	 * @return Response
 	 */
 	public function respondServerError($message = "Internal server error!") {
-		return $this->setStatusCode(500)->respondWithError($message);	
+		return $this->setStatusCode(IlluminateResponse::HTTP_INTERNAL_SERVER_ERROR)->respondWithError($message);	
 	}
 
 	public function respondUnprocessableEntity($message = "Unprocessable entity!") {
-		return $this->setStatusCode(422)->respondWithError($message);
+		return $this->setStatusCode(IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY)->respondWithError($message);
 	}
 
 	/**
@@ -26,7 +28,7 @@ class APIController extends BaseController {
 	 */
 	public function respondNotFound($message = "Not found!")
 	{
-		return $this->setStatusCode(404)->respondWithError($message);
+		return $this->setStatusCode(IlluminateResponse::HTTP_NOT_FOUND)->respondWithError($message);
 	}
 	/**
 	 * Returns error when resource is unauthorized
@@ -35,7 +37,7 @@ class APIController extends BaseController {
 	 */
 	public function respondUnauthorized($message = "Not authorized!")
 	{
-		return $this->setStatusCode(401)->respondWithError($message);
+		return $this->setStatusCode(IlluminateResponse::HTTP_UNAUTHORIZED)->respondWithError($message);
 	}
 
 	/**
