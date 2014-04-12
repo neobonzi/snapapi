@@ -1,17 +1,7 @@
 <?php
-use Support\Transformers\UserTransformer;
-class UsersController extends APIController {
 
-	public $restful = true;
-	
-	/**
-	 * @var Support\Transformers\UserTransformer
-	 */
-	protected $userTransformer;
+class APIController extends BaseController {
 
-	function __construct(UserTransformer $userTransformer) {
-		$this->userTransformer = $userTransformer;
-	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -19,10 +9,7 @@ class UsersController extends APIController {
 	 */
 	public function index()
 	{
-		$users = User::all();
-		return Response::json([
-			'data' => $this->userTransformer->transformCollection($users->all())
-		], 200);
+		//
 	}
 
 
@@ -56,20 +43,7 @@ class UsersController extends APIController {
 	 */
 	public function show($id)
 	{
-		$user = User::find($id);
-
-		if (!$user) {
-			return Response::json([
-				'error' => [
-					'message' => 'User does not exist',
-					'code' => 34
-				]
-			], 404);
-		}
-
-		return Response::json([
-			'data' => $this->userTransformer->transform($user)
-		], 200);
+		//
 	}
 
 
@@ -107,5 +81,6 @@ class UsersController extends APIController {
 	{
 		//
 	}
+
 
 }
