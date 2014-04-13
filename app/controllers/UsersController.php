@@ -45,8 +45,8 @@ class UsersController extends APIController {
 	public function store()
 	{
 		$validator = Validator::make(Input::all(),[
-			'username' => 'required|min:5|max:20|unique:users',
-			'password' => 'required|min:5|max:20|unique:users',
+			'username' => 'required|min:3|max:20|unique:users',
+			'password' => 'required|min:8|max:20|unique:users',
 			'email' => 'required|email|unique:users'
 		]);
 		if($validator->fails()) {
