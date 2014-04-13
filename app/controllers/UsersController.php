@@ -1,5 +1,6 @@
 <?php
 use Support\Transformers\UserTransformer;
+use Support\Validation\UserValidator;
 
 class UsersController extends APIController {
 
@@ -9,6 +10,10 @@ class UsersController extends APIController {
 	 * @var Support\Transformers\UserTransformer
 	 */
 	protected $userTransformer;
+	/**
+	 * @var Support\CustomValidationMessages
+	 */
+	protected $validationMessages;
 
 	function __construct(UserTransformer $userTransformer) {
 		$this->userTransformer = $userTransformer;
@@ -44,11 +49,8 @@ class UsersController extends APIController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make(Input::all(),[
-			'username' => 'required|min:3|max:20|unique:users',
-			'password' => 'required|min:8|max:20|unique:users',
-			'email' => 'required|email|unique:users'
-		]);
+
+		$validator = UserValidator::make();
 		if($validator->fails()) {
 			$messages = implode("",$validator->messages()->all(":message"));
 			return $this->respondUnprocessableEntity("Parameters failed validation for a user. " . $messages);
@@ -138,7 +140,7 @@ class UsersController extends APIController {
 				'auth_token' => $publicToken
 			]);
 		} else {
-			return $this->respondUnauthorized("Username and/or password are incorrect");
+			return $this->respondForbidden("Username and/or password are incorrect");
 		}
 	}
 

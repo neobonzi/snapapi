@@ -41,6 +41,16 @@ class APIController extends BaseController {
 	}
 
 	/**
+	 * Returns error when resource is unauthorized
+	 * @param string $message 
+	 * @return Response
+	 */
+	public function respondForbidden($message = "Forbidden!")
+	{
+		return $this->setStatusCode(IlluminateResponse::HTTP_FORBIDDEN)->respondWithError($message);
+	}
+
+	/**
 	 * Generic all OK response
 	 * @param array $data 
 	 * @param array $headers 
