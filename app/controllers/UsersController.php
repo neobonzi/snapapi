@@ -12,7 +12,7 @@ class UsersController extends APIController {
 
 	function __construct(UserTransformer $userTransformer) {
 		$this->userTransformer = $userTransformer;
-		$this->beforeFilter('auth.token', ['except' => 'login']);
+		$this->beforeFilter('auth.token', ['except' => 'login|store']);
 	}
 	/**
 	 * Display a listing of the resource.
