@@ -1,5 +1,7 @@
 <?php
 
+use Faker\Factory as Faker;
+
 class UserGroupSeeder extends Seeder {
 
 	/**
@@ -10,13 +12,15 @@ class UserGroupSeeder extends Seeder {
 	public function run()
 	{
 		Eloquent::unguard();
+		$faker = Faker::create();
+		$groupIds = Group::lists('id');
+		$userIds = User::lists('id');
 
-		$numGroups = 10;
-
-		for($i = 0; $i < $numGroups; $i++) {
-			$group = new Group;
-			$group->name = 'Group '.$i;
-			$group->save();
+		foreach(range(1, 10) as $index) {
+			DB::table('group_user')->insert([
+				'group_id' => $faker->randomElement($groupIds),
+				'user_id' => $faker->randomElement($userIds),
+			]);
 		}
 	}
 

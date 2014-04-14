@@ -2,6 +2,11 @@
 
 class DatabaseSeeder extends Seeder {
 
+	private $tables = [
+		'users',
+		'groups',
+		'group_user'
+	];
 	/**
 	 * Run the database seeds.
 	 *
@@ -9,12 +14,18 @@ class DatabaseSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-		Eloquent::unguard();
-		User::truncate();
-
+		$this->cleanDB();
 		$this->call('UserSeeder');
-		DB::statement('SET FOREIGN_KEY_CHECKS=1');
+		$this->call('GroupSeeder');
+		$this->call('UserGroupSeeder');
 	}
 
+	private function cleanDB() {
+		Eloquent::unguard();
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+		foreach ($this->tables as $tableName) {
+			DB::table($tableName)->truncate();
+		}
+		DB::statement('SET FOREIGN_KEY_CHECKS=1');
+	}
 }

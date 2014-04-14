@@ -18,6 +18,7 @@ class Group extends Eloquent {
 	 * @var array
 	 */
 	protected $hidden = array();
+	protected $fillable = ['name'];
 
 	public function getGroupName() {
 		return $this->name;

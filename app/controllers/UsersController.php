@@ -4,8 +4,30 @@ use Support\Validation\UserValidator;
 
 class UsersController extends APIController {
 
+	/**
+	 * @var boolean
+	 */ 
 	public $restful = true;
-	
+
+	/**
+	 * @var array
+	 */ 
+	private $userMessages = [
+		'required' => "The :attribute field is required",
+		'username.min' => ":attribute must be between :min and :max characters.",
+		'username.max' => ":attribute must be between :min and :max characters.",
+		'unique' => ":attribute already registered.",
+		'email' => "Email must be well formed."
+	];
+
+	/**
+	 * @var array
+	 */ 
+	private $userRules = [
+		'username' => 'required|min:3|max:20|unique:users',
+		'password' => 'required|min:8|max:20|unique:users',
+		'email' => 'required|email|unique:users'
+	];
 	/**
 	 * @var Support\Transformers\UserTransformer
 	 */
@@ -50,10 +72,10 @@ class UsersController extends APIController {
 	public function store()
 	{
 
-		$validator = UserValidator::make();
+		$validator = Validator::make(Input::all(), $this->userRules, $this->userMessages);
 		if($validator->fails()) {
-			$messages = implode("",$validator->messages()->all(":message"));
-			return $this->respondUnprocessableEntity("Parameters failed validation for a user. " . $messages);
+			$messages = implode(" ",$validator->messages()->all(":message"));
+			return $this->respondUnprocessableEntity($messages);
 		}
 
 		$newUser = User::create([

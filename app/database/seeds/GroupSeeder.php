@@ -1,23 +1,25 @@
 <?php
 
+use Faker\Factory as Faker;
+use Faker\Generator as Generator;
+
 class GroupSeeder extends Seeder {
 
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 */
-	public function run()
-	{
-		Eloquent::unguard();
+   /**
+    * Run the database seeds.
+    *
+    * @return void
+    */
+   public function run()
+   {
+      Eloquent::unguard();
+      $faker = Faker::create();
+      $numGroups = 10;
 
-		$numGroups = 10;
-
-		for($i = 0; $i < $numGroups; $i++) {
-			$group = new Group;
-			$group->name = 'Group '.$i;
-			$group->save();
-		}
-	}
-
+      foreach(range(1,$numGroups) as $i){
+         Group::create([
+            'name' => implode(" ", $faker->words(3))
+         ]);
+      }
+   }
 }

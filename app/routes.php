@@ -14,9 +14,7 @@
 Route::group(['prefix' => 'api/v1'], function(){
     // User Routing
     Route::resource('users', 'UsersController');
-    Route::group(['prefix' => 'users'], function() {
-
-    });
+    Route::resource('groups', 'GroupsController');
     Route::post('login', 'UsersController@login');
 });
 
