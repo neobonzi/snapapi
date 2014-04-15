@@ -159,7 +159,8 @@ class UsersController extends APIController {
 
 			return $this->respond([
 				'message' => "Successfully logged in!",
-				'auth_token' => $publicToken
+				'id' => Auth::user()->id,
+				'auth_token' => $publicToken,
 			]);
 		} else {
 			return $this->respondForbidden("Username and/or password are incorrect");
