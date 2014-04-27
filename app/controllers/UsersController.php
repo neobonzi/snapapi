@@ -81,7 +81,8 @@ class UsersController extends APIController {
 		$newUser = User::create([
 			'username' => e(Input::get('username')), 
 			'email' => e(Input::get('email')), 
-			'password' => Hash::make(Input::get('password'))
+			'phone' => e(Input::get('phone')),
+			'password' => Hash::make(Input::get('password')),
 		]);
 		
 		if(!$newUser) {
@@ -160,6 +161,8 @@ class UsersController extends APIController {
 			return $this->respond([
 				'message' => "Successfully logged in!",
 				'id' => Auth::user()->id,
+				'username' => Auth::user()->username,
+				'email' => Auth::user()->email,
 				'auth_token' => $publicToken,
 			]);
 		} else {
