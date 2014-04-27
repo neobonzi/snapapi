@@ -13,7 +13,7 @@ class UserTransformer extends Transformer {
 			'id' => $user['id'],
 			'username' => $user['username'],
 			'email' => $user['email'],
-			'phone' => $user['phone'],
+			'phone' => $user['phone']
 		];
 	}
 

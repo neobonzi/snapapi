@@ -7,11 +7,11 @@
 		"laravel/framework": "4.1.*",
 		"way/generators": "2.*",
 		"madewithlove/laravel-oauth2": "0.4.*",
-		"tappleby/laravel-auth-token": "dev-feature/jwt"
+		"tappleby/laravel-auth-token": "dev-feature/jwt",
+		"fzaninotto/faker": "1.3"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "4.0.*",
-		"fzaninotto/faker": "1.3"
+		"phpunit/phpunit": "4.0.*"
 	},
 	"autoload": {
 		"classmap": [
