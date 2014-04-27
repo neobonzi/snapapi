@@ -1,5 +1,6 @@
 <?php
 use Support\Transformers\UserTransformer;
+use Support\Transformers\GroupTransformer;
 use Support\Validation\UserValidator;
 
 class UsersController extends APIController {
@@ -32,13 +33,15 @@ class UsersController extends APIController {
 	 * @var Support\Transformers\UserTransformer
 	 */
 	protected $userTransformer;
+	protected $groupTransformer;
 	/**
 	 * @var Support\CustomValidationMessages
 	 */
 	protected $validationMessages;
 
-	function __construct(UserTransformer $userTransformer) {
+	function __construct(UserTransformer $userTransformer, GroupTransformer $groupTransformer) {
 		$this->userTransformer = $userTransformer;
+		$this->groupTransformer = $groupTransformer;
 		$this->beforeFilter('auth.token', ['except' => ['login','store']]);
 	}
 	/**
@@ -50,6 +53,17 @@ class UsersController extends APIController {
 	{
 		$user = User::find(Auth::user()->id);
 		return $this->respond($this->userTransformer->transform($user));
+	}
+
+	public function groups($id)
+	{
+		$groups = User::find($id)->groups->all();
+		$transformedGroups = $this->groupTransformer->transformCollection($groups);
+
+		return $this->respond([
+			'data' => $transformedGroups
+			]
+		);
 	}
 
 

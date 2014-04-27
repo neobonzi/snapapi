@@ -10,9 +10,10 @@ class GroupTransformer extends Transformer {
 	 */
     public function transform($group) {
         $userTransformer = new UserTransformer;
-        $members = $userTransformer->transformCollection($group->users());
+        $groupMembers = $group->users->all();
+        $members = $userTransformer->transformCollection($groupMembers);
 	     return [
-			   'id' => $group['id'],
+			'id' => $group['id'],
             'name' => $group['name'],
             'members' => $members
 		  ];

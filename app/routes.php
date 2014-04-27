@@ -16,6 +16,7 @@ Route::group(['prefix' => 'api/v1'], function(){
     Route::resource('users', 'UsersController');
     Route::resource('groups', 'GroupsController');
     Route::post('login', 'UsersController@login');
+    Route::get('users/{id}/groups', 'UsersController@groups');
 });
 
 

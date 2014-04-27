@@ -18,7 +18,8 @@ class GroupSeeder extends Seeder {
 
       foreach(range(1,$numGroups) as $i){
          Group::create([
-            'name' => implode(" ", $faker->words(3))
+            'name' => implode(" ", $faker->words(3)),
+            
          ]);
       }
    }
