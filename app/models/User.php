@@ -59,4 +59,8 @@ class User extends Eloquent implements UserInterface {
 		return $this->belongsToMany('Group');
 	}
 
+	public function invites() {
+		return $this->hasMany('Invite');
+	}
+
 }

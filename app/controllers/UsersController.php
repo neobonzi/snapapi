@@ -13,6 +13,17 @@ class UsersController extends APIController {
 	/**
 	 * @var array
 	 */ 
+	private $groupMessages = [
+		'required' => "The :attribute field is required",
+		'username.min' => ":attribute must be between :min and :max characters.",
+		'username.max' => ":attribute must be between :min and :max characters.",
+		'unique' => ":attribute already registered.",
+		'email' => "Email must be well formed."
+	];
+
+	/**
+	 * @var array
+	 */ 
 	private $userMessages = [
 		'required' => "The :attribute field is required",
 		'username.min' => ":attribute must be between :min and :max characters.",
@@ -28,6 +39,13 @@ class UsersController extends APIController {
 		'username' => 'required|min:3|max:20|unique:users',
 		'password' => 'required|min:8|max:20|unique:users',
 		'email' => 'required|email|unique:users'
+	];
+
+	/**
+	 * @var array
+	 */ 
+	private $groupRules = [
+		'name' => 'required|min:3|max:20|unique:groups',
 	];
 	/**
 	 * @var Support\Transformers\UserTransformer
@@ -55,9 +73,36 @@ class UsersController extends APIController {
 		return $this->respond($this->userTransformer->transform($user));
 	}
 
-	public function groups($id)
+	/**
+	 * Creates a new group given a group name and user id
+	 * @param int $userId
+	 * @return Response
+	 */
+	public function addGroup($userId) {
+		$validator = Validator::make(Input::all(), $this->groupRules, $this->userMessages);
+		if($validator->fails()) {
+			$messages = implode(" ",$validator->messages()->all(":message"));
+			return $this->respondUnprocessableEntity($messages);
+		}
+
+		$group = new Group([
+			'name' => e(Input::get('name'))
+		]);
+
+		$currentUser = User::find($userId);
+		$currentUser->groups()->save($group);
+		return $this->respond([
+			'data' =>
+				[
+					'id' => $group->id
+				],
+			'message' => "Group successfully created"
+		]);
+	}
+
+	public function getGroups($userId)
 	{
-		$groups = User::find($id)->groups->all();
+		$groups = User::find($userId)->groups->all();
 		$transformedGroups = $this->groupTransformer->transformCollection($groups);
 
 		return $this->respond([
