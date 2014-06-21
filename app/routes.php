@@ -13,6 +13,7 @@
 
 Route::group(['prefix' => 'api/v1'], function(){
     // User Routing
+    Route::get('users/all', 'UsersController@getUsers');
     Route::resource('users', 'UsersController');
     Route::resource('groups', 'GroupsController');
     Route::post('login', 'UsersController@login');
@@ -22,6 +23,10 @@ Route::group(['prefix' => 'api/v1'], function(){
 
 
 Route::group(array('prefix' => 'bootstrap'), function(){
+
+    Route::get('/', function () {
+        return View::make('index');
+    });
 
     //Fake a login to get a token
     Route::get('login', function() {

@@ -60,7 +60,7 @@ class UsersController extends APIController {
 	function __construct(UserTransformer $userTransformer, GroupTransformer $groupTransformer) {
 		$this->userTransformer = $userTransformer;
 		$this->groupTransformer = $groupTransformer;
-		$this->beforeFilter('auth.token', ['except' => ['login','store']]);
+		$this->beforeFilter('auth.token', ['except' => ['login','store','getUsers', 'destroy']]);
 	}
 	/**
 	 * Display a listing of the resource.
@@ -78,35 +78,35 @@ class UsersController extends APIController {
 	 * @param int $userId
 	 * @return Response
 	 */
-	public function addGroup($userId) {
-		$validator = Validator::make(Input::all(), $this->groupRules, $this->userMessages);
+	public function addUser($userId) {
+		$validator = Validator::make(Input::all(), $this->userRules, $this->userMessages);
 		if($validator->fails()) {
 			$messages = implode(" ",$validator->messages()->all(":message"));
 			return $this->respondUnprocessableEntity($messages);
 		}
 
-		$group = new Group([
+		$user = new User([
 			'name' => e(Input::get('name'))
 		]);
 
 		$currentUser = User::find($userId);
-		$currentUser->groups()->save($group);
+		$currentUser->users()->save($user);
 		return $this->respond([
 			'data' =>
 				[
-					'id' => $group->id
+					'id' => $user->id
 				],
-			'message' => "Group successfully created"
+			'message' => "User successfully created"
 		]);
 	}
 
-	public function getGroups($userId)
+	public function getUsers()
 	{
-		$groups = User::find($userId)->groups->all();
-		$transformedGroups = $this->groupTransformer->transformCollection($groups);
+		$users = User::all();
+		$transformedUsers = $this->userTransformer->transformCollection($users->all());
 
 		return $this->respond([
-			'data' => $transformedGroups
+			'data' => $transformedUsers
 			]
 		);
 	}
@@ -201,7 +201,9 @@ class UsersController extends APIController {
 	 */
 	public function destroy($id)
 	{
-		//
+		User::destroy($id);
+
+		return $this->setStatusCode(201)->respondWithMessage("User successfully deleted");
 	}
 
 	public function login() {

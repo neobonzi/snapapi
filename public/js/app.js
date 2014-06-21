@@ -1,0 +1,1 @@
+var bootstrapApp = angular.module('bootstrapApp', ['mainCtrl', 'userService']);

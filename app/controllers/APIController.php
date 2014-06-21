@@ -74,6 +74,20 @@ class APIController extends BaseController {
 		]);
 	}
 
+	/**
+	 * Responds with a success message
+	 * @param string $message 
+	 * @return Response
+	 */
+	public function respondWithMessage($message) {
+		return $this->respond([
+			'success' => [
+				'message' => $message,
+				'status_code' => $this->getStatusCode()
+			]
+		]);
+	}
+
     /**
      * Gets the value of statusCode.
      *
