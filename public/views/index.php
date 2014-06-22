@@ -13,6 +13,7 @@
 	.delete-user-icon	{ color: red; }
 	.delete-user-icon:hover { cursor: pointer; cursor: hand; text-decoration: none; color: red;}
 	.snaplogo { vertical-align:middle; display: inline-block; line-height: 50px; color: #BEC1C2;}
+	.btn { margin: 5px; }
 	</style>
 
 	<!-- JS -->
@@ -134,13 +135,22 @@
 		<div ng-show="groups_manageGroups">
 			<form class="form-horizontal" role="form">
 				<div class="row">
+					<div class="col-xs-12">
+						<h4>Place User in Group</h4>
+						<p>Choose a user and a group and submit to place that user in that group</p>
+					</div>
 					<div class="col-xs-6">
-						<select class="form-control">
-							<option ng-repeat="user in users">{{ user.username }}</option>
+						<label>Choose a User</label>
+						<select class="form-control" data-ng-model="mg_users">
+							<option ng-value="{{ user.id }}" ng-repeat="user in users">{{ user.username }}</option>
 						</select>
 					</div>
 					<div class="col-xs-6">
-						hi
+						<label>Choose a group</label>
+						<select class="form-control" data-ng-model="mg_groups">
+							<option ng-value="{{ group.id }}" ng-repeat="group in groups">{{ group.name }}</option>
+						</select>
+						<button type="submit" data-ng-click="addUserToGroup(form)" class="btn btn-success pull-right">Submit</button>
 					</div>
 				</div>
 			</form>

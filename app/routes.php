@@ -25,6 +25,7 @@ Route::group(['prefix' => 'api/v1'], function(){
 
     // Relational Routes
     Route::get('users/{id}/groups', 'UsersController@groups');
+    Route::put('users/{uid}/groups/{gid}', 'UsersController@putGroup');
     Route::post('users/{id}/groups', 'UsersController@addGroup');
 });
 

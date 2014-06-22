@@ -31,6 +31,14 @@ angular.module('mainCtrl', ['flash'])
 				});
 		};
 
+		$scope.addUserToGroup = function(form) {
+			console.log($scope.mg_users, $scope.mg_groups);
+			$http.put('/api/v1/users/' + $scope.mg_users + '/groups/' + $scope.mg_groups)
+				.success(function(data) {
+					flash(data.success.message);
+				});
+		}
+
 		$scope.deleteGroup = function(id) {
 			Group.destroy(id)
 				.success(function(data) {
@@ -59,7 +67,11 @@ angular.module('mainCtrl', ['flash'])
 					$scope.groups_allGroups = false;
 					$scope.groups_newGroup = false;
 					$scope.groups_manageGroups = true;
-					User.get
+					Group.get()
+						.success(function(data){
+							$scope.groups = data.data;
+						});
+					User.get()
 						.success(function(data){
 							$scope.users = data.data;
 						});

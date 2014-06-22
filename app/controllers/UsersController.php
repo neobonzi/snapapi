@@ -60,7 +60,7 @@ class UsersController extends APIController {
 	function __construct(UserTransformer $userTransformer, GroupTransformer $groupTransformer) {
 		$this->userTransformer = $userTransformer;
 		$this->groupTransformer = $groupTransformer;
-		$this->beforeFilter('auth.token', ['except' => ['login','store','getUsers', 'destroy']]);
+		$this->beforeFilter('auth.token', ['except' => ['login','store','getUsers', 'putGroup', 'destroy']]);
 	}
 	/**
 	 * Display a listing of the resource.
@@ -71,6 +71,18 @@ class UsersController extends APIController {
 	{
 		$user = User::find(Auth::user()->id);
 		return $this->respond($this->userTransformer->transform($user));
+	}
+
+	/**
+	 * Creates a user / group relationship.
+	 * @param int $userId 
+	 * @param int $groupId 
+	 * @return Response
+	 */
+	public function putGroup($uid, $gid)
+	{
+		User::find($uid)->groups()->attach($gid);
+		return $this->setStatusCode(201)->respondWithMessage("User" + $uid + " successfully added to group " + $gid);
 	}
 
 	/**
@@ -210,13 +222,20 @@ class UsersController extends APIController {
 
 
 	/**
-	 * Remove the specified resource from storage.
+	 * Remove the specified user from storage and removes
+	 * all relationships.
 	 *
-	 * @param  int  $id
+	 * @param  int  $id the id of the user to delete
 	 * @return Response
 	 */
 	public function destroy($id)
 	{
+		$user = User::find($id);
+		
+		User::find($id)->groups()->detach();
+
+		User::destroy($id);
+
 		return $this->setStatusCode(201)->respondWithMessage("User successfully deleted");
 	}
 
