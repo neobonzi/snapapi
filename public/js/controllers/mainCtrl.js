@@ -1,6 +1,8 @@
 angular.module('mainCtrl', ['flash'])
 	.controller('mainController', function ($scope, $http, User, Group, flash) {
 		$scope.userPage = true;
+		$scope.users_allUsers = true;
+
 		$scope.gamePage = false;
 		$scope.groupPage = false;
 		$scope.seedPage = false;
@@ -40,10 +42,36 @@ angular.module('mainCtrl', ['flash'])
 					});
 				});
 		};
+
+		$scope.groupsNavTo = function(page) {
+			switch (page) {
+				case "all":
+					$scope.groups_allGroups = true;
+					$scope.groups_newGroup = false;
+					$scope.groups_manageGroups = false;
+					break;
+				case "new":
+					$scope.groups_allGroups = false;
+					$scope.groups_newGroup = true;
+					$scope.groups_manageGroups = false;
+					break;
+				case "manage":
+					$scope.groups_allGroups = false;
+					$scope.groups_newGroup = false;
+					$scope.groups_manageGroups = true;
+					User.get
+						.success(function(data){
+							$scope.users = data.data;
+						});
+					break;
+			}
+		}
+
 		$scope.navTo = function (page) {
 			switch (page) {
 				case "users":
 					$scope.userPage = true;
+					$scope.users_allUsers = true;
 					$scope.gamePage = false;
 					$scope.groupPage = false;
 					$scope.seedPage = false;
@@ -65,6 +93,7 @@ angular.module('mainCtrl', ['flash'])
 					$scope.userPage = false;
 					$scope.gamePage = false;
 					$scope.groupPage = true;
+					$scope.groups_allGroups = true;
 					$scope.seedPage = false;
 					Group.get()
 						.success(function(data) {

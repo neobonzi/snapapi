@@ -100,6 +100,18 @@ class UsersController extends APIController {
 		]);
 	}
 
+	public function groups($id)
+	{
+		$groups = User::find($id)->groups->all();
+		$transformedGroups = $this->groupTransformer->transformCollection($groups);
+
+		return $this->respond([
+			'data' => $transformedGroups
+			]
+		);
+	}
+
+
 	/**
 	 * Returns a list of all groups. Mainly used for the bootstrapping.
 	 * @return a list of all the groups.

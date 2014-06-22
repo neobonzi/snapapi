@@ -95,36 +95,56 @@
 		</div>
 		<div>
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="usersNavTo('all')">All Groups</a></li>
-				<li><a ng-href="#here" ng-click="usersNavTo('new')">New</a></li>
+				<li class="active"><a ng-href="#here" ng-click="groupsNavTo('all')">All Groups</a></li>
+				<li><a ng-href="#here" ng-click="groupsNavTo('new')">Create New</a></li>
+				<li><a ng-href="#here" ng-click="groupsNavTo('manage')">Manage Groups</a></li>
 			</ul>
 		</div>
-		<p class="text-center" ng-show="loading">
-			<span class="fa fa-clock-o fa-3x fa-spin"></span>
-		</p>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Members</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="group" ng-repeat="group in groups">
-					<td>{{ group.id }}</td>
-					<td>{{ group.name }}</td>
-					<td>
-						<span class="groupMember" ng-repeat="member in group.members">
-							{{ member.username }},
-						</span>
-					</td>
-					<td class="text-center">
-						<a ng-href="#here" ng-click="deleteGroup(group.id)" class="delete-user-icon glyphicon glyphicon-remove"></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div ng-show="groups_allGroups">
+			<p class="text-center" ng-show="loading">
+				<span class="fa fa-clock-o fa-3x fa-spin"></span>
+			</p>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Members</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="group" ng-repeat="group in groups">
+						<td>{{ group.id }}</td>
+						<td>{{ group.name }}</td>
+						<td>
+							<span class="groupMember" ng-repeat="member in group.members">
+								{{ member.username }},
+							</span>
+						</td>
+						<td class="text-center">
+							<a ng-href="#here" ng-click="deleteGroup(group.id)" class="delete-user-icon glyphicon glyphicon-remove"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div ng-show="groups_newGroup">
+			Make a new group
+		</div>
+		<div ng-show="groups_manageGroups">
+			<form class="form-horizontal" role="form">
+				<div class="row">
+					<div class="col-xs-6">
+						<select class="form-control">
+							<option ng-repeat="user in users">{{ user.username }}</option>
+						</select>
+					</div>
+					<div class="col-xs-6">
+						hi
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 	<div class="games-page" ng-show="gamePage">
 		<div class="page-header">
