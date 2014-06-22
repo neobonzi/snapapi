@@ -18,7 +18,7 @@ class User extends Eloquent implements UserInterface {
 	 */
 	protected $hidden = array('password');
 
-	protected $fillable = ['username', 'email', 'password'];
+	protected $fillable = ['username', 'email', 'password', 'phone'];
 
 	/**
 	 * Get the unique identifier for the user.

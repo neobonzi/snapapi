@@ -31,17 +31,35 @@ angular.module('mainCtrl', ['flash'])
 				});
 		};
 
+		$scope.lookupUser = function(form) {
+			User.find($scope.nu_search)
+				.success(function(data) {
+					console.log($scope.vu);
+					$scope.vu = data.data;
+				});
+		}
+
 		$scope.addUserToGroup = function(form) {
-			console.log($scope.mg_users, $scope.mg_groups);
 			$http.put('/api/v1/users/' + $scope.mg_users + '/groups/' + $scope.mg_groups)
 				.success(function(data) {
 					flash(data.success.message);
 				});
 		}
 
+		$scope.createUser = function (form) {
+			console.log($scope.nu_phone);
+			User.create($scope.nu_username, $scope.nu_password, $scope.nu_email, $scope.nu_phone)
+				.success(function (data) {
+					flash(data.message);
+				})
+				.error(function (data) {
+					flash(data.error.message);
+				});
+		}
+
 		$scope.deleteGroup = function(id) {
 			Group.destroy(id)
-				.success(function(data) {
+				.success(function (data) {
 					flash(data.success.message);
 					Group.get()
 						.success(function(data) {
@@ -51,9 +69,38 @@ angular.module('mainCtrl', ['flash'])
 				});
 		};
 
+		$scope.usersNavTo = function(page) {
+			switch (page) {
+				case "all":
+					User.get()
+						.success(function(data) {
+							$scope.users = data.data;
+							$scope.loading = false;
+						});			
+					$scope.users_allUsers = true;
+					$scope.users_viewUser = false;
+					$scope.users_newUser = false;
+					break;
+				case "view":
+					$scope.users_allUsers = false;
+					$scope.users_viewUser = true;
+					$scope.users_newUser = false;
+					break;
+				case "new":
+					$scope.users_allUsers = false;
+					$scope.users_viewUser = false;
+					$scope.users_newUser = true;
+					break;
+			}
+		}
+
 		$scope.groupsNavTo = function(page) {
 			switch (page) {
 				case "all":
+					Group.get()
+						.success(function(data){
+							$scope.groups = data.data;
+						});
 					$scope.groups_allGroups = true;
 					$scope.groups_newGroup = false;
 					$scope.groups_manageGroups = false;

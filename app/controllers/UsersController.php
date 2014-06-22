@@ -29,6 +29,7 @@ class UsersController extends APIController {
 		'username.min' => ":attribute must be between :min and :max characters.",
 		'username.max' => ":attribute must be between :min and :max characters.",
 		'unique' => ":attribute already registered.",
+		'phone' => "Correctly formatted phone number is required",
 		'email' => "Email must be well formed."
 	];
 
@@ -38,6 +39,7 @@ class UsersController extends APIController {
 	private $userRules = [
 		'username' => 'required|min:3|max:20|unique:users',
 		'password' => 'required|min:8|max:20|unique:users',
+		'phone' => 'required|min:10|max:30|unique:users',
 		'email' => 'required|email|unique:users'
 	];
 
@@ -60,7 +62,7 @@ class UsersController extends APIController {
 	function __construct(UserTransformer $userTransformer, GroupTransformer $groupTransformer) {
 		$this->userTransformer = $userTransformer;
 		$this->groupTransformer = $groupTransformer;
-		$this->beforeFilter('auth.token', ['except' => ['login','store','getUsers', 'putGroup', 'destroy']]);
+		$this->beforeFilter('auth.token', ['except' => ['login', 'index', 'store','getUsers', 'putGroup', 'destroy']]);
 	}
 	/**
 	 * Display a listing of the resource.
@@ -69,8 +71,35 @@ class UsersController extends APIController {
 	 */
 	public function index()
 	{
-		$user = User::find(Auth::user()->id);
-		return $this->respond($this->userTransformer->transform($user));
+		if(Input::has('username'))
+		{
+			return $this->findByUsername(Input::get('username'));
+		}
+
+		$users = User::all();
+		$transformedUsers = $this->userTransformer->transformCollection($users->all());
+
+		return $this->respond([
+			'data' => $transformedUsers
+			]
+		);
+	}
+
+	protected function findByUsername($username)
+	{
+		$user = User::where('username', $username)->first();
+
+		if($user == null)
+		{
+			return $this->setStatusCode(404)->respondNotFound("User with username " + $username + " does not exist");
+		}
+
+		$transformedUser = $this->userTransformer->transform($user);
+		return $this->respond([
+			'data' => $transformedUser
+			]
+		);
+
 	}
 
 	/**
@@ -86,7 +115,7 @@ class UsersController extends APIController {
 	}
 
 	/**
-	 * Creates a new group given a group name and user id
+	 * Creates a new user given a user id
 	 * @param int $userId
 	 * @return Response
 	 */
@@ -158,7 +187,6 @@ class UsersController extends APIController {
 	 */
 	public function store()
 	{
-
 		$validator = Validator::make(Input::all(), $this->userRules, $this->userMessages);
 		if($validator->fails()) {
 			$messages = implode(" ",$validator->messages()->all(":message"));

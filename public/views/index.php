@@ -14,6 +14,11 @@
 	.delete-user-icon:hover { cursor: pointer; cursor: hand; text-decoration: none; color: red;}
 	.snaplogo { vertical-align:middle; display: inline-block; line-height: 50px; color: #BEC1C2;}
 	.btn { margin: 5px; }
+	#user_search { margin-top: 10px; } 
+	#user_search input { display:inline-block; margin-top: 5px;}
+	#user_search .form-group { float: left; }
+	#user_search button { display:inline-block; }
+	#flash-messages { margin-top:30px; }
 	</style>
 
 	<!-- JS -->
@@ -52,43 +57,97 @@
 		</div>
 	</div>
 </div>
-<div class="cold-md-8 col-md-offset-2">
-	<flash-messages></flash-messages>
-</div>
 <div class="col-md-8 col-md-offset-2">
+	<flash-messages></flash-messages>
 	<div class="users-page" ng-show="userPage">
 		<div class="page-header">
 			<h2>User Management</h2>
 		</div>
 		<div>
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="usersNavTo('all')">All Users</a></li>
-				<li><a ng-href="#here" ng-click="usersNavTo('new')">New</a></li>
+				<li class="active"><a ng-href="#here" ng-click="usersNavTo('all')">All Users</a></li>
+				<li><a ng-href="#here" ng-click="usersNavTo('view')">Lookup User</a></li>
+				<li><a ng-href="#here" ng-click="usersNavTo('new')">New User</a></li>
 			</ul>
 		</div>
-		<p class="text-center" ng-show="loading">
-			<span class="fa fa-clock-o fa-3x fa-spin"></span>
-		</p>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Username</th>
-					<th>Email</th>
-					<th>Delete</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="user" ng-repeat="user in users">
-					<td>{{ user.id }}</td>
-					<td>{{ user.username }}</td>
-					<td>{{ user.email }}</td>
-					<td class="text-center">
-						<a ng-href="#here" ng-click="deleteUser(user.id)" class="delete-user-icon glyphicon glyphicon-remove"></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div ng-show="users_allUsers">
+			<p class="text-center" ng-show="loading">
+				<span class="fa fa-clock-o fa-3x fa-spin"></span>
+			</p>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Username</th>
+						<th>Email</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="user" ng-repeat="user in users">
+						<td>{{ user.id }}</td>
+						<td>{{ user.username }}</td>
+						<td>{{ user.email }}</td>
+						<td class="text-center">
+							<a ng-href="#here" ng-click="deleteUser(user.id)" class="delete-user-icon glyphicon glyphicon-remove" /></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div ng-show="users_viewUser">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="row">
+						<div class="col-xs-7">
+							<h4>View a User</h4>
+							<p>Search for a user to view their stats</p>
+						</div>
+						<div class="col-xs-5" id="user_search">
+							<form>
+								<div class="form-group">
+									<input type="text" data-ng-model="nu_search" class="form-control" placeholder="Search">
+								</div>
+								<button type="submit" data-ng-click="lookupUser(form)" class="btn btn-default">Submit</button>
+							</form>
+						</div>
+					</div>
+					<div class="row">
+						<h4>{{ vu.username }}</h4>
+						<h5><b>Email:</b> {{ vu.email }}</h5>
+						<h5><b>Phone:</b> {{ vu.phone }}</h5>
+						<h5><b>API Key:</b> {{ vu.apikey }}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-show="users_newUser">
+			<form role="form">
+				<div class="row">
+					<div class="col-xs-12">
+						<h4>Create a new User</h4>
+						<p>Enter a username, password, and email to create a new user.</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Username</label>
+					<input class="form-control" data-ng-model="nu_username" placeholder="Username"></input>
+				</div>
+				<div class="form-group">
+					<label>Password</label>
+					<input class="form-control" type="password" data-ng-model="nu_password" placeholder="Password"></input>
+				</div>
+				<div class="form-group">
+					<label>Email</label>
+					<input class="form-control" type="email" data-ng-model="nu_email" placeholder="Email"></input>
+				</div>
+				<div class="form-group">
+					<label>Phone Number</label>
+					<input class="form-control" type="phone" data-ng-model="nu_phone" placeholder="Phone"></input>
+				</div>
+				<button type="submit" data-ng-click="createUser(form)" class="btn btn-success">Create User</button>
+			</form>
+		</div>
 	</div>
 	<div class="groups-page" ng-show="groupPage">
 		<div class="page-header">
