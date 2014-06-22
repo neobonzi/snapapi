@@ -112,11 +112,13 @@
 							</form>
 						</div>
 					</div>
-					<div class="row">
-						<h4>{{ vu.username }}</h4>
-						<h5><b>Email:</b> {{ vu.email }}</h5>
-						<h5><b>Phone:</b> {{ vu.phone }}</h5>
-						<h5><b>API Key:</b> {{ vu.apikey }}</h5>
+					<div class="row" ng-show="nu_user_details">
+						<div class="col-xs-5">
+							<h4>{{ vu.username }}</h4>
+							<h5><b>Email:</b> {{ vu.email }}</h5>
+							<h5><b>Phone:</b> {{ vu.phone }}</h5>
+							<h5><b>API Key:</b> {{ vu.apikey }}</h5>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -189,7 +191,19 @@
 			</table>
 		</div>
 		<div ng-show="groups_newGroup">
-			Make a new group
+			<form role="form">
+				<div class="row">
+					<div class="col-xs-12">
+						<h4>Create a new Group</h4>
+						<p>Enter a group name to add a new group.</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Group Name</label>
+					<input class="form-control" data-ng-model="ng_groupname" placeholder="Group Name"></input>
+				</div>
+				<button type="submit" data-ng-click="createGroup(form)" class="btn btn-success">Create Group</button>
+			</form>
 		</div>
 		<div ng-show="groups_manageGroups">
 			<form class="form-horizontal" role="form">

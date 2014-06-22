@@ -2,6 +2,7 @@ angular.module('mainCtrl', ['flash'])
 	.controller('mainController', function ($scope, $http, User, Group, flash) {
 		$scope.userPage = true;
 		$scope.users_allUsers = true;
+		$scope.no_user_details = false;
 
 		$scope.gamePage = false;
 		$scope.groupPage = false;
@@ -35,6 +36,7 @@ angular.module('mainCtrl', ['flash'])
 			User.find($scope.nu_search)
 				.success(function(data) {
 					console.log($scope.vu);
+					$scope.nu_user_details = true;
 					$scope.vu = data.data;
 				});
 		}
@@ -47,10 +49,19 @@ angular.module('mainCtrl', ['flash'])
 		}
 
 		$scope.createUser = function (form) {
-			console.log($scope.nu_phone);
 			User.create($scope.nu_username, $scope.nu_password, $scope.nu_email, $scope.nu_phone)
 				.success(function (data) {
 					flash(data.message);
+				})
+				.error(function (data) {
+					flash(data.error.message);
+				});
+		}
+
+		$scope.createGroup = function (form) {
+			Group.create($scope.ng_groupname)
+				.success(function (data) {
+					flash("Group " + $scope.ng_groupname + " successfully created!");
 				})
 				.error(function (data) {
 					flash(data.error.message);

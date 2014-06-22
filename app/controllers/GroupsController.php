@@ -5,9 +5,21 @@ use Support\Transformers\GroupTransformer;
 class GroupsController extends APIController {
 	protected $groupTransformer;
 
+	private $groupMessages = [
+		'required' => "The :attribute field is required",
+		'username.min' => ":attribute must be between :min and :max characters.",
+		'username.max' => ":attribute must be between :min and :max characters.",
+		'unique' => ":attribute already registered.",
+		'email' => "Email must be well formed."
+	];
+
+	private $groupRules = [
+		'name' => 'required|min:3|max:20|unique:groups',
+	];
+
 	function __construct(GroupTransformer $groupTransformer) {
 		$this->groupTransformer = $groupTransformer;
-		$this->beforeFilter('auth.token', ['except' => ['getGroups', 'destroy']]);
+		$this->beforeFilter('auth.token', ['except' => ['getGroups', 'index', 'store', 'destroy']]);
 	}
 	/**
 	 * Display a listing of the resource.
@@ -53,7 +65,24 @@ class GroupsController extends APIController {
 	 */
 	public function store()
 	{
-		//
+		$validator = Validator::make(Input::all(), $this->groupRules, $this->groupMessages);
+		if($validator->fails()) {
+			$messages = implode(" ",$validator->messages()->all(":message"));
+			return $this->respondUnprocessableEntity($messages);
+		}
+
+		$newGroup = Group::create([
+			'name' => e(Input::get('name'))
+		]);
+
+		if(!$newGroup) {
+			$this->respondServerError("There was an error while creating a new group!");
+		} else {
+			return $this->respond([
+				'data' => $this->groupTransformer->transform($newGroup)
+				]
+			);
+		}
 	}
 
 
