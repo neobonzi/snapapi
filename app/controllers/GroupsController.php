@@ -7,6 +7,7 @@ class GroupsController extends APIController {
 
 	function __construct(GroupTransformer $groupTransformer) {
 		$this->groupTransformer = $groupTransformer;
+		$this->beforeFilter('auth.token', ['except' => ['getGroups', 'destroy']]);
 	}
 	/**
 	 * Display a listing of the resource.
@@ -32,6 +33,18 @@ class GroupsController extends APIController {
 		//
 	}
 
+	/**
+	 * Returns a list of all groups. Mainly used for the bootstrapping.
+	 * @return a list of all the groups.
+	 */
+	public function getGroups()
+	{
+		$transformedGroups = $this->groupTransformer->transformCollection(Group::all()->all());
+		return $this->respond([
+			'data' => $transformedGroups
+			]
+		);
+	}
 
 	/**
 	 * Store a newly created resource in storage.
@@ -88,7 +101,7 @@ class GroupsController extends APIController {
 	 */
 	public function destroy($id)
 	{
-		//
+		return $this->setStatusCode(201)->respondWithMessage("Group successfully deleted");
 	}
 
 

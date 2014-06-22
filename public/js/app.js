@@ -1,1 +1,1 @@
-var bootstrapApp = angular.module('bootstrapApp', ['mainCtrl', 'userService']);
+var bootstrapApp = angular.module('bootstrapApp', ['ngRoute', 'mainCtrl', 'userService', 'groupService']);

@@ -100,6 +100,10 @@ class UsersController extends APIController {
 		]);
 	}
 
+	/**
+	 * Returns a list of all groups. Mainly used for the bootstrapping.
+	 * @return a list of all the groups.
+	 */
 	public function getUsers()
 	{
 		$users = User::all();
@@ -201,8 +205,6 @@ class UsersController extends APIController {
 	 */
 	public function destroy($id)
 	{
-		User::destroy($id);
-
 		return $this->setStatusCode(201)->respondWithMessage("User successfully deleted");
 	}
 

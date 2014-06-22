@@ -12,11 +12,18 @@
 */
 
 Route::group(['prefix' => 'api/v1'], function(){
-    // User Routing
+    // Bootstrap Routing
     Route::get('users/all', 'UsersController@getUsers');
+    Route::get('groups/all', 'GroupsController@getGroups');
+
+    // Controller Routes
     Route::resource('users', 'UsersController');
     Route::resource('groups', 'GroupsController');
+
+    // Auth Routes
     Route::post('login', 'UsersController@login');
+
+    // Relational Routes
     Route::get('users/{id}/groups', 'UsersController@getGroups');
     Route::post('users/{id}/groups', 'UsersController@addGroup');
 });

@@ -12,6 +12,7 @@
 	form	{ padding-bottom: 20px; }
 	.delete-user-icon	{ color: red; }
 	.delete-user-icon:hover { cursor: pointer; cursor: hand; text-decoration: none; color: red;}
+	.snaplogo { vertical-align:middle; display: inline-block; line-height: 50px; color: #BEC1C2;}
 	</style>
 
 	<!-- JS -->
@@ -23,7 +24,9 @@
 	<script src="js/angular-flash.js"></script> <!-- load our controller -->
 	<script src="js/controllers/mainCtrl.js"></script> <!-- load our controller -->
 	<script src="js/services/userService.js"></script> <!-- load our service -->
+	<script src="js/services/groupService.js"></script> <!-- load our service -->
 	<script src="js/app.js"></script> <!-- load our application -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.js"></script>
 </head>
 <body class="container" ng-app="bootstrapApp" ng-controller="mainController">
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -35,6 +38,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
+			<span class="snaplogo fa fa-camera-retro fa-2x pull-left"></span>
 			<a class="navbar-brand" href="#">SnapHunt Admin</a>
 		</div>
 		<div class="navbar-collapse collapse">
@@ -42,24 +46,27 @@
 				<li class="active"><a ng-href="#here" ng-click="navTo('users')">Users</a></li>
 				<li><a ng-href='#here' ng-click="navTo('groups')">Groups</a></li>
 				<li><a ng-href='#here' ng-click="navTo('games')">Games</a></li>
+				<li><a ng-href='#here' ng-click="navTo('seeds')">Seeds</a></li>
 			</ul>
 		</div>
 	</div>
+</div>
+<div class="cold-md-8 col-md-offset-2">
+	<flash-messages></flash-messages>
 </div>
 <div class="col-md-8 col-md-offset-2">
 	<div class="users-page" ng-show="userPage">
 		<div class="page-header">
 			<h2>User Management</h2>
 		</div>
-		<flash-messages></flash-messages>
 		<div>
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#">Show All</a></li>
-				<li><a href="#">Create New</a></li>
+				<li class="active"><a href="usersNavTo('all')">All Users</a></li>
+				<li><a ng-href="#here" ng-click="usersNavTo('new')">New</a></li>
 			</ul>
 		</div>
 		<p class="text-center" ng-show="loading">
-			<span class="fa fa-meh-o fa-5x fa-spin"></span>
+			<span class="fa fa-clock-o fa-3x fa-spin"></span>
 		</p>
 		<table class="table">
 			<thead>
@@ -67,7 +74,7 @@
 					<th>ID</th>
 					<th>Username</th>
 					<th>Email</th>
-					<th>Action</th>
+					<th>Delete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,10 +93,47 @@
 		<div class="page-header">
 			<h2>Group Management</h2>
 		</div>
+		<div>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="usersNavTo('all')">All Groups</a></li>
+				<li><a ng-href="#here" ng-click="usersNavTo('new')">New</a></li>
+			</ul>
+		</div>
+		<p class="text-center" ng-show="loading">
+			<span class="fa fa-clock-o fa-3x fa-spin"></span>
+		</p>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Members</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="group" ng-repeat="group in groups">
+					<td>{{ group.id }}</td>
+					<td>{{ group.name }}</td>
+					<td>
+						<span class="groupMember" ng-repeat="member in group.members">
+							{{ member.username }},
+						</span>
+					</td>
+					<td class="text-center">
+						<a ng-href="#here" ng-click="deleteGroup(group.id)" class="delete-user-icon glyphicon glyphicon-remove"></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div class="games-page" ng-show="gamePage">
 		<div class="page-header">
 			<h2>Game Management</h2>
+		</div>
+	</div>
+	<div class="seeds-page" ng-show="seedPage">
+		<div class="page-header">
+			<h2>Seeds</h2>
 		</div>
 	</div>
 </div>
