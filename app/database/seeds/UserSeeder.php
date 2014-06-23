@@ -24,12 +24,13 @@ class UserSeeder extends Seeder {
             'phone' => $faker->phoneNumber()
          ]);
       }
-      // Add the testing account
+      // Add the admin accounts
       User::create([
-         'email' => $faker->email(),
-         'username' => 'admin',
-         'password' => Hash::make('admin'),
-         'phone' => "699-699-9699"
+         'email' => 'snaphunt@gmail.com',
+         'username' => 'snapadmin',
+         'password' => Hash::make('makeitsnappy69'),
+         'phone' => "805-208-1026",
+         'admin' => true
       ]);
    }
 }
