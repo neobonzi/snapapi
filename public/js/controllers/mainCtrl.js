@@ -34,10 +34,15 @@ angular.module('mainCtrl', ['flash'])
 
 		$scope.lookupUser = function(form) {
 			User.find($scope.nu_search)
-				.success(function(data) {
+				.success(function (data) {
 					console.log($scope.vu);
 					$scope.nu_user_details = true;
 					$scope.vu = data.data;
+					User.groups($scope.vu.id)
+						.success(function (data) {
+							console.log(data);
+							$scope.vu.groups = data.data;
+						});
 				});
 		}
 

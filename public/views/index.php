@@ -19,6 +19,7 @@
 	#user_search .form-group { float: left; }
 	#user_search button { display:inline-block; }
 	#flash-messages { margin-top:30px; }
+	#footer {background-color: #f5f5f5;}
 	</style>
 
 	<!-- JS -->
@@ -89,7 +90,7 @@
 						<td>{{ user.username }}</td>
 						<td>{{ user.email }}</td>
 						<td class="text-center">
-							<a ng-href="#here" ng-click="deleteUser(user.id)" class="delete-user-icon glyphicon glyphicon-remove" /></span>
+							<a ng-href="#here" ng-click="deleteUser(user.id)" class="delete-user-icon glyphicon glyphicon-remove" /></a>
 						</td>
 					</tr>
 				</tbody>
@@ -117,7 +118,9 @@
 							<h4>{{ vu.username }}</h4>
 							<h5><b>Email:</b> {{ vu.email }}</h5>
 							<h5><b>Phone:</b> {{ vu.phone }}</h5>
-							<h5><b>API Key:</b> {{ vu.apikey }}</h5>
+							<hr/>
+							<h4>Groups</h4>
+							<h5 ng-repeat="group in vu.groups">{{ group.name }}</h5>
 						</div>
 					</div>
 				</div>
@@ -133,7 +136,7 @@
 				</div>
 				<div class="form-group">
 					<label>Username</label>
-					<input class="form-control" data-ng-model="nu_username" placeholder="Username"></input>
+					<input class="form-control" data-ng-model="nu_username" placeholder="Username"> </input>
 				</div>
 				<div class="form-group">
 					<label>Password</label>
@@ -238,6 +241,13 @@
 		<div class="page-header">
 			<h2>Seeds</h2>
 		</div>
+	</div>
+</div>
+<div id="footer">
+	<div class="container">
+		<p class="muted">
+			Snaphunt API Admin
+		</p>
 	</div>
 </div>
 </body>

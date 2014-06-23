@@ -6,6 +6,11 @@ angular.module('userService', [])
 					return response.data.data;
 				});
 			},
+			groups : function (uid) {
+				return $http.get('api/v1/users/' + uid + '/groups').success(function (response) {
+					return response.data.data;
+				});
+			},
 			find : function(name) {
 				var qparams = { params: { 'username' : name }};
 				return $http.get('api/v1/users', qparams).success(function (response) {

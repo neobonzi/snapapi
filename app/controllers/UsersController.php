@@ -62,7 +62,7 @@ class UsersController extends APIController {
 	function __construct(UserTransformer $userTransformer, GroupTransformer $groupTransformer) {
 		$this->userTransformer = $userTransformer;
 		$this->groupTransformer = $groupTransformer;
-		$this->beforeFilter('auth.token', ['except' => ['login', 'index', 'store','getUsers', 'putGroup', 'destroy']]);
+		$this->beforeFilter('auth.token', ['except' => ['login', 'index', 'groups', 'store','getUsers', 'putGroup', 'destroy']]);
 	}
 	/**
 	 * Display a listing of the resource.
