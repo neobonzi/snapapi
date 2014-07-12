@@ -114,7 +114,7 @@
 						</div>
 					</div>
 					<div class="row" ng-show="nu_user_details">
-						<div class="col-xs-5">
+						<div class="col-xs-12">
 							<h4>{{ vu.username }}</h4>
 							<h5><b>Email:</b> {{ vu.email }}</h5>
 							<h5><b>Phone:</b> {{ vu.phone }}</h5>
@@ -126,14 +126,16 @@
 							<table class="table">
 								<thead>
 									<tr>
-										</th>Group</th>
-										</th>Invited By</th>
-										</th>Join</th>
+										<th>Group</th>
+										<th>Invited By</th>
+										<th>Status</th>
+										<th>Join</th>
 									</tr>
 								</thead>
-								<tr ng-repeat"invite in vu.invites">
-									<td>{{ invite.from }}</td>
-									<td>{{ invite.group }}
+								<tr ng-repeat="invite in vu.invites">
+									<td>{{ invite.group_name }}</td>
+									<td>{{ invite.from_name }}</td>
+									<td>{{ invite.status }}</td>
 									<td><a href="#here" ng-click="acceptInvite(invite.id)">Accept</a></td>
 								</tr>
 							</table>

@@ -35,19 +35,19 @@ angular.module('mainCtrl', ['flash'])
 		$scope.lookupUser = function(form) {
 			User.find($scope.nu_search)
 				.success(function (data) {
-					console.log($scope.vu);
-					$scope.nu_user_details = true;
 					$scope.vu = data.data;
 					User.groups($scope.vu.id)
 						.success(function (data) {
-							console.log(data);
 							$scope.vu.groups = data.data;
 						});
 						
 					User.invites($scope.vu.id)
 						.success(function (data) {
-							$scope.vu.invits = data.data;
+							$scope.vu.invites = data.data;
+							
+							console.log($scope);
 						});
+					$scope.nu_user_details = true;
 				});
 		}
 
@@ -169,7 +169,6 @@ angular.module('mainCtrl', ['flash'])
 					$scope.loading = true;
 					User.get()
 						.success(function(data) {
-							console.log(JSON.stringify(data.data));
 							$scope.users = data.data;
 							$scope.loading = false;
 						});
@@ -188,7 +187,6 @@ angular.module('mainCtrl', ['flash'])
 					$scope.seedPage = false;
 					Group.get()
 						.success(function(data) {
-							console.log(JSON.stringify(data.data));
 							$scope.users = data.data;
 							$scope.loading = false;
 						});
