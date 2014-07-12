@@ -1,10 +1,26 @@
 <?php
 
 class Invite extends Eloquent {
-	protected $fillable = [];
+	protected $fillable = ['from', 'to', 'group'];
 
-	public function user() {
-		return $this->belongsTo('User');
+	public function id() {
+		return $this->id;
+	}
+
+	public function from() {
+		return $this->belongsTo('User', 'from');
+	}
+
+	public function to() {
+		return $this->belongsTo('User', 'to');
+	}
+
+	public function getStatusAttribute($value) {
+		return $value;
+	}
+
+	public function setStatusAttribute($value) {
+		$this->attributes['status'] = $value;
 	}
 
 	public function group() {

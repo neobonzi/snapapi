@@ -43,6 +43,11 @@ angular.module('mainCtrl', ['flash'])
 							console.log(data);
 							$scope.vu.groups = data.data;
 						});
+						
+					User.invites($scope.vu.id)
+						.success(function (data) {
+							$scope.vu.invits = data.data;
+						});
 				});
 		}
 
@@ -70,6 +75,17 @@ angular.module('mainCtrl', ['flash'])
 				})
 				.error(function (data) {
 					flash(data.error.message);
+				});
+		}
+
+		$scope.acceptInvite = function(id) {
+			Invite.accept(id)
+				.success(function (data) {
+					flash(data.success.message);
+					Invite.get()
+						.success(function(data) {
+
+						});
 				});
 		}
 

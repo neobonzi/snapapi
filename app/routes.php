@@ -23,10 +23,14 @@ Route::group(['prefix' => 'api/v1'], function(){
     // Auth Routes
     Route::post('login', 'UsersController@login');
 
-    // Relational Routes
+    /**
+     * Users Relational Routes
+     **/
     Route::get('users/{id}/groups', 'UsersController@groups');
-    Route::put('users/{uid}/groups/{gid}', 'UsersController@putGroup');
     Route::post('users/{id}/groups', 'UsersController@addGroup');
+
+    Route::get('users/{id}/invites', 'InvitesController@getInvites');
+    Route::post('users/{id}/invites', 'InvitesController@sendInvite');
 });
 
 

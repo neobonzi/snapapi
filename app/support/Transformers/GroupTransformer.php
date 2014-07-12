@@ -1,4 +1,5 @@
-<?php namespace Support\Transformers;
+<?php 
+namespace Support\Transformers;
 
 class GroupTransformer extends Transformer {
 

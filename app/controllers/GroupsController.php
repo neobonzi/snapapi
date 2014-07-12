@@ -59,6 +59,21 @@ class GroupsController extends APIController {
 	}
 
 	/**
+	 */
+	public function putInvite($uid)
+	{
+		$validator = Validator::make(Input::all(), $this->inviteRules, $this->inviteMessages);
+		if($validator->fails()) {
+			$messages = implode(" ",$validator->messages()->all(":message"));
+			return $this->respondUnprocessableEntity($messages);
+		}
+
+		$newInvite = Invite::create([
+			'group' => e(Input::get('group'))
+		]);
+	}
+
+	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response

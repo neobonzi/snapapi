@@ -18,7 +18,7 @@ class User extends Eloquent implements UserInterface {
 	 */
 	protected $hidden = array('password');
 
-	protected $fillable = ['username', 'email', 'password', 'phone'];
+	protected $fillable = ['username', 'email', 'password', 'phone', 'invites', 'sent_invites'];
 
 	/**
 	 * Get the unique identifier for the user.
@@ -55,12 +55,19 @@ class User extends Eloquent implements UserInterface {
 		return $this->email;
 	}
 
-	public function groups() {
-		return $this->belongsToMany('Group');
+	public function invites()
+	{
+		return $this->hasMany('Invite', 'to');
 	}
 
-	public function invites() {
-		return $this->hasMany('Invite');
+	public function groups() 
+	{
+		return $this->hasOne('Group');
+	}
+
+	public function sent_invites() 
+	{
+		return $this->hasMany('Invite', 'from');
 	}
 
 	public function getRememberToken()

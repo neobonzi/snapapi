@@ -121,6 +121,22 @@
 							<hr/>
 							<h4>Groups</h4>
 							<h5 ng-repeat="group in vu.groups">{{ group.name }}</h5>
+							<hr/>
+							<h4>Invites</h4>
+							<table class="table">
+								<thead>
+									<tr>
+										</th>Group</th>
+										</th>Invited By</th>
+										</th>Join</th>
+									</tr>
+								</thead>
+								<tr ng-repeat"invite in vu.invites">
+									<td>{{ invite.from }}</td>
+									<td>{{ invite.group }}
+									<td><a href="#here" ng-click="acceptInvite(invite.id)">Accept</a></td>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>
